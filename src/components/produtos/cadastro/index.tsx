@@ -1,7 +1,19 @@
 import { useState } from 'react'
-import { Layout, Input } from 'components'
+import { Layout, Input, Message } from 'components'
 import { useProdutoService } from 'app/services'
 import { Produto } from 'app/models/produtos'
+import { converterEmBigDecimal } from 'app/util/money'
+import { Alert } from 'components/common/message'
+import * as yup from 'yup'
+import { json } from 'stream/consumers'
+
+const validationSchema = yup.object().shape({
+    codigo: yup.string().required(),
+    nome: yup.string().required(),
+    descricao: yup.string().required(),
+    preco: yup.number().required(),
+
+})
 
 export const CadastroProdutos: React.FC = () => {
     const service = useProdutoService()
@@ -11,30 +23,45 @@ export const CadastroProdutos: React.FC = () => {
     const [descricao, setDescricao] = useState<string>('')
     const [id, setId] = useState<string>()
     const [dataCadastro, setCadastro] = useState<string>()
+    const [messages, setMessages] = useState<Array<Alert>>([])
 
     const submit = () => {
         const produto: Produto = {
             id,
             codigo,
-            preco: parseFloat(preco),
+            preco: converterEmBigDecimal(preco),
             nome,
             descricao
         }
-        if(id){
-            service.update(produto)
-                   .then(response => console.log("atualizado"))
-        }else{
-            service.save(produto).then(produtoResposta => {
-                setId(produtoResposta.id)
-                setCadastro(produtoResposta.cadastro)
-            })
+        validationSchema.validate(produto).then(obj => {
+            if (id) {
+                service.update(produto)
+                    .then(response => setMessages([{
+                        tipo: "success", texto: "Produto Atualizado com sucesso"
+                    }]))
+            } else {
+                service.save(produto).then(produtoResposta => {
+                    setId(produtoResposta.id)
+                    setCadastro(produtoResposta.cadastro)
+                    setMessages([{
+                        tipo: "success", texto: "Produto Cadastrado com sucesso"
+                    }])
+                })
+            }
 
-        }
-       
+        }).catch(err => {
+            const field = err.path;
+            const message = err.message
+            setMessages([{
+                tipo: "danger", field, texto: message
+            }])
+            console.log(JSON.parse(JSON.stringify(err)))
+        })
+
     }
 
     return (
-        <Layout titulo='Cadastro De Produtos'>
+        <Layout titulo='Cadastro De Produtos' mensagens={messages}>
             {id &&
                 <div className='columns'>
                     <Input label='Id'
@@ -63,7 +90,10 @@ export const CadastroProdutos: React.FC = () => {
                     onChange={setPreco}
                     value={preco}
                     id="inputPreco"
-                    placeholder='Coloque o Preço do objeto' />
+                    placeholder='Coloque o Preço do objeto'
+                    currency={true}
+                    maxLength={16}
+                />
             </div>
             <Input label='Nome*:'
                 columnClasses='is-full'
@@ -88,7 +118,7 @@ export const CadastroProdutos: React.FC = () => {
             <div className='field is-grouped'>
                 <div className='control'>
                     <button onClick={submit} className='button is-link'>
-                      {id ? "Atualizar" : "Salvar"}
+                        {id ? "Atualizar" : "Salvar"}
                     </button>
                 </div>
                 <div className='control'>

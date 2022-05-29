@@ -1,0 +1,25 @@
+interface messageProps {
+    tipo: string;
+    field?: string;
+    texto: string;
+}
+
+export interface Alert{
+    tipo : string;
+    field? : string,
+    texto : string
+}
+
+export const Message: React.FC<messageProps> = ({
+    tipo,
+    field,
+    texto,
+}) => {
+    return (
+        <article className={`message is-${tipo}`}>
+            <div className="message-body">
+                {field && `${field}:`}{texto}
+            </div>
+        </article>
+    )
+}
