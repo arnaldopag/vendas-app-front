@@ -14,15 +14,23 @@ export const CadastroProdutos: React.FC = () => {
 
     const submit = () => {
         const produto: Produto = {
+            id,
             codigo,
             preco: parseFloat(preco),
             nome,
             descricao
         }
-        service.save(produto).then(produtoResposta => {
-            setId(produtoResposta.id)
-            setCadastro(produtoResposta.cadastro)
-        })
+        if(id){
+            service.update(produto)
+                   .then(response => console.log("atualizado"))
+        }else{
+            service.save(produto).then(produtoResposta => {
+                setId(produtoResposta.id)
+                setCadastro(produtoResposta.cadastro)
+            })
+
+        }
+       
     }
 
     return (
