@@ -9,6 +9,8 @@ export const CadastroProdutos: React.FC = () => {
     const [preco, setPreco] = useState<string>('')
     const [nome, setNome] = useState<string>('')
     const [descricao, setDescricao] = useState<string>('')
+    const [id, setId] = useState<string>()
+    const [dataCadastro, setCadastro] = useState<string>()
 
     const submit = () => {
         const produto: Produto = {
@@ -17,11 +19,32 @@ export const CadastroProdutos: React.FC = () => {
             nome,
             descricao
         }
-        service.save(produto).then(produtoResposta => console.log(produto))
+        service.save(produto).then(produtoResposta => {
+            setId(produtoResposta.id)
+            setCadastro(produtoResposta.cadastro)
+        })
     }
 
     return (
         <Layout titulo='Cadastro De Produtos'>
+            {id &&
+                <div className='columns'>
+                    <Input label='Id'
+                        value={id}
+                        columnClasses='is-half'
+                        id="inpuId"
+                        disabled
+                    />
+
+                    <Input label='Data Cadastro:'
+                        columnClasses='is-half'
+                        value={dataCadastro}
+                        id="inputDataCadastro"
+                        disabled
+                    />
+                </div>
+            }
+
             <div className='columns'>
                 <Input label='Codigo*' columnClasses='is-half'
                     onChange={setCodigo}
@@ -30,10 +53,12 @@ export const CadastroProdutos: React.FC = () => {
 
                 <Input label='Preço*' columnClasses='is-half'
                     onChange={setPreco}
+                    value={preco}
                     id="inputPreco"
                     placeholder='Coloque o Preço do objeto' />
             </div>
-            <Input label='Nome*:' columnClasses='is-full'
+            <Input label='Nome*:'
+                columnClasses='is-full'
                 onChange={setNome}
                 id="inputNome"
                 placeholder='Coloque o nome do objeto' />
@@ -54,7 +79,9 @@ export const CadastroProdutos: React.FC = () => {
 
             <div className='field is-grouped'>
                 <div className='control'>
-                    <button onClick={submit} className='button is-link'>Salvar</button>
+                    <button onClick={submit} className='button is-link'>
+                      {id ? "Atualizar" : "Salvar"}
+                    </button>
                 </div>
                 <div className='control'>
                     <button className='button is-link is-light'>Voltar</button>

@@ -1,7 +1,8 @@
-export interface Produto{
-    id? : number,
-    nome? : string,
-    descricao? : string,
-    codigo? : string,
-    preco? : number
+export interface Produto {
+    id?: string;
+    nome?: string;
+    descricao?: string;
+    preco?: number;
+    codigo?: string;
+    cadastro?: string;
 }
