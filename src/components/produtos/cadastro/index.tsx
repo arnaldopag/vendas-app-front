@@ -7,13 +7,24 @@ import { Alert } from 'components/common/message'
 import * as yup from 'yup'
 import { json } from 'stream/consumers'
 
+const msgObrigatoria = "Campo Obrigatório"
 const validationSchema = yup.object().shape({
-    codigo: yup.string().required(),
-    nome: yup.string().required(),
-    descricao: yup.string().required(),
-    preco: yup.number().required(),
+    codigo: yup.string().trim()
+        .required(msgObrigatoria),
+    nome: yup.string().trim()
+        .required(msgObrigatoria),
+    descricao: yup.string().trim()
+        .required(msgObrigatoria),
+    preco: yup.number().required(msgObrigatoria)
+        .moreThan(0, "valor deve ser maior que 0,00"),
 
 })
+interface FormErros {
+    codigo?: string,
+    nome?: string,
+    preco?: string,
+    descricao?: string,
+}
 
 export const CadastroProdutos: React.FC = () => {
     const service = useProdutoService()
@@ -24,6 +35,7 @@ export const CadastroProdutos: React.FC = () => {
     const [id, setId] = useState<string>()
     const [dataCadastro, setCadastro] = useState<string>()
     const [messages, setMessages] = useState<Array<Alert>>([])
+    const [erros, setErros] = useState<FormErros>({})
 
     const submit = () => {
         const produto: Produto = {
@@ -34,6 +46,7 @@ export const CadastroProdutos: React.FC = () => {
             descricao
         }
         validationSchema.validate(produto).then(obj => {
+            setErros({})
             if (id) {
                 service.update(produto)
                     .then(response => setMessages([{
@@ -52,10 +65,9 @@ export const CadastroProdutos: React.FC = () => {
         }).catch(err => {
             const field = err.path;
             const message = err.message
-            setMessages([{
-                tipo: "danger", field, texto: message
-            }])
-            console.log(JSON.parse(JSON.stringify(err)))
+            setErros({
+                [field]: message
+            })
         })
 
     }
@@ -83,8 +95,10 @@ export const CadastroProdutos: React.FC = () => {
             <div className='columns'>
                 <Input label='Codigo*' columnClasses='is-half'
                     onChange={setCodigo}
+                    value={codigo}
                     id="inputCodigo"
-                    placeholder='Coloque o código do objeto' />
+                    placeholder='Coloque o código do objeto'
+                    error={erros.codigo} />
 
                 <Input label='Preço*' columnClasses='is-half'
                     onChange={setPreco}
@@ -93,13 +107,15 @@ export const CadastroProdutos: React.FC = () => {
                     placeholder='Coloque o Preço do objeto'
                     currency={true}
                     maxLength={16}
+                    error={erros.preco}
                 />
             </div>
             <Input label='Nome*:'
                 columnClasses='is-full'
                 onChange={setNome}
                 id="inputNome"
-                placeholder='Coloque o nome do objeto' />
+                placeholder='Coloque o nome do objeto'
+                error={erros.nome} />
 
             <div className='columns'>
                 <div className='field column is-full'>
@@ -111,6 +127,9 @@ export const CadastroProdutos: React.FC = () => {
                             id='inputDescricao' value={descricao}
                             onChange={event => setDescricao(event.target.value)}
                             placeholder='Digite a descrição do produto' />
+                        {erros.descricao &&
+                            <p className='help is-danger'> {erros.descricao}</p>
+                        }
                     </div>
                 </div>
             </div>
