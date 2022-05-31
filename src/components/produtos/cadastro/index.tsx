@@ -6,6 +6,7 @@ import { converterEmBigDecimal } from 'app/util/money'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
 import { json } from 'stream/consumers'
+import Link from 'next/link'
 
 const msgObrigatoria = "Campo Obrigatório"
 const validationSchema = yup.object().shape({
@@ -140,9 +141,11 @@ export const CadastroProdutos: React.FC = () => {
                         {id ? "Atualizar" : "Salvar"}
                     </button>
                 </div>
-                <div className='control'>
-                    <button className='button is-link is-light'>Voltar</button>
-                </div>
+                <Link href='/consultas/produtos'>
+                    <div className='control'>
+                        <button className='button is-link is-light'>Voltar</button>
+                    </div>
+                </Link>
             </div>
         </Layout >
     )
