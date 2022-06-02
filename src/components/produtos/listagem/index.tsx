@@ -1,7 +1,19 @@
 import { Layout } from "components/Layout"
 import Link from "next/link"
+import { TabelaProdutos } from "./tabela"
+import { Produto } from "app/models/produtos"
+import useSWR from "swr"
+import { httpClient } from "app/http"
+import { Axios, AxiosResponse } from "axios"
 
 export const ListagemProdutos: React.FC = () => {
+    const { data: result,error } = useSWR<AxiosResponse<Produto[]>>('/api/produtos', url => httpClient.get(url))
+    if (!result) {
+        return(
+            <div>Carregando</div>
+        )
+    }
+
     return (
         <Layout titulo="Produtos">
             <Link href='/cadastros/produtos'>
@@ -9,6 +21,7 @@ export const ListagemProdutos: React.FC = () => {
             </Link>
 
             <br />
+            <TabelaProdutos produtos={result?.data}/>
         </Layout>
     )
 }
