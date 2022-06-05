@@ -11,12 +11,22 @@ export const useProdutoService = () =>{
         return response.data
     }
     const update =async ( produto : Produto) :Promise<void> => {
-
         const url:string = `${resourceUrl}/${produto.id}`
          await httpClient.put<Produto>(url,produto)
     }
+    const updateProduct= async (id:number) : Promise<Produto> => {
+        const url:string = `${resourceUrl}/${id}`
+        const response : AxiosResponse<Produto> = await httpClient.get(url);
+        return response.data;
+    }
+    const deletar = async (id : string) :Promise<void> => {
+        const url:string = `${resourceUrl}/${id}`
+        await httpClient.delete(url)
+    }
     return {
         save,
-        update
+        update,
+        updateProduct,
+        deletar
     }
 }
