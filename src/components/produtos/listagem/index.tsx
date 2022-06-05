@@ -1,4 +1,4 @@
-import { Layout } from "components/Layout"
+import { Layout,Loader } from "components"
 import Link from "next/link"
 import { TabelaProdutos } from "./tabela"
 import { Produto } from "app/models/produtos"
@@ -8,20 +8,24 @@ import { Axios, AxiosResponse } from "axios"
 
 export const ListagemProdutos: React.FC = () => {
     const { data: result,error } = useSWR<AxiosResponse<Produto[]>>('/api/produtos', url => httpClient.get(url))
-    if (!result) {
-        return(
-            <div>Carregando</div>
-        )
+  
+    const editar =(produto : Produto) =>{
+        console.log(produto)
     }
+    const deletar =(produto : Produto) =>{
+        console.log(produto)
+    }
+
 
     return (
         <Layout titulo="Produtos">
             <Link href='/cadastros/produtos'>
                 <button className="button is-warning">Novo</button>
             </Link>
-
             <br />
-            <TabelaProdutos produtos={result?.data}/>
+            <br />
+            <Loader  show ={!result}/>
+            <TabelaProdutos onDelete={deletar} onEdit={editar} produtos={result?.data || []}/>
         </Layout>
     )
 }
