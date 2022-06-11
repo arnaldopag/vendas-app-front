@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Layout, Input, Message } from 'components'
+import { Layout, Input,InputMoney } from 'components'
 import { useProdutoService } from 'app/services'
 import { Produto } from 'app/models/produtos'
 import { converterEmBigDecimal } from 'app/util/money'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
-import { json } from 'stream/consumers'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { parse } from 'url'
+
 
 const msgObrigatoria = "Campo Obrigatório"
 const validationSchema = yup.object().shape({
@@ -55,7 +54,7 @@ export const CadastroProdutos: React.FC = () => {
 
             })
         }
-    }, [queryId])
+    }, [queryId, service])
 
 
     const submit = () => {
@@ -126,7 +125,6 @@ export const CadastroProdutos: React.FC = () => {
                     value={preco}
                     id="inputPreco"
                     placeholder='Coloque o Preço do objeto'
-                    currency={true}
                     maxLength={16}
                     error={erros.preco}
                 />

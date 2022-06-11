@@ -1,5 +1,5 @@
 import { Cliente } from "app/models/clientes"
-import { Layout } from "components/Layout"
+import { Layout } from "components/layout"
 import { useState } from "react"
 import { ClienteForm } from "./form"
 

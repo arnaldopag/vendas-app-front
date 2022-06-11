@@ -5,7 +5,7 @@ export const converterEmBigDecimal = (value) : number => {
     return value.replace(".", "").replace(",", ".")
 }
 
-export const formatReal = ( valor ) => {
+export const formatReal = ( valor) => {
     const v = ((valor.replace(/\D/g, '') / 100).toFixed(2) + '').split('.');
 
     const m = v[0].split('').reverse().join('').match(/.{1,3}/g);

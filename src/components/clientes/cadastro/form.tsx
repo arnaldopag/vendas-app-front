@@ -1,6 +1,7 @@
 import { Cliente } from "app/models/clientes"
 import { useFormik } from 'formik'
 import { Input } from 'components'
+import { InputCpf } from "components/common"
 
 interface ClienteFormProps {
     cliente: Cliente
@@ -26,6 +27,7 @@ export const ClienteForm: React.FC<ClienteFormProps> = ({
         initialValues: { ...formScheme, ...cliente },
         onSubmit,
     })
+
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -60,7 +62,7 @@ export const ClienteForm: React.FC<ClienteFormProps> = ({
                 />
             </div>
             <div className="columns">
-                <Input id="cpf"
+                <InputCpf id="cpf"
                     name="cpf"
                     label="CPF*:"
                     autoComplete="off"
@@ -107,7 +109,7 @@ export const ClienteForm: React.FC<ClienteFormProps> = ({
             <div className="field is-grouped">
                 <div className="control is-link">
                     <button className="button" type="submit">
-                        {formik.values.id? "Atualizar": "Salvar"}
+                        {formik.values.id ? "Atualizar" : "Salvar"}
                     </button>
                 </div>
             </div>
