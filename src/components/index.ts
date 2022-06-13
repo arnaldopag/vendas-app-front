@@ -4,6 +4,8 @@ export {
     Input, 
     InputMoney, 
     InputCpf, 
+    InputFone,
+    InputDate,
     Message, 
     Loader 
 } from './common'
