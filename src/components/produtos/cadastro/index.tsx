@@ -43,15 +43,13 @@ export const CadastroProdutos: React.FC = () => {
 
     useEffect(() => {
         if (queryId) {
-            service.updateProduct(parseInt(queryId)).then(produtoEncontrado => {
-                console.log(produtoEncontrado)
+            service.getById(parseInt(queryId)).then(produtoEncontrado => {
                 setCodigo(produtoEncontrado.codigo)
                 setDescricao(produtoEncontrado.descricao)
                 setNome(produtoEncontrado.nome)
                 setPreco(parseFloat(produtoEncontrado.preco))
                 setId(produtoEncontrado.id)
                 setCadastro(produtoEncontrado.cadastro || '')
-
             })
         }
     }, [queryId, service])

@@ -58,18 +58,18 @@ export const Input: React.FC<InputProps> = ({
 
 export const InputMoney: React.FC<InputProps> = (props: InputProps) => {
     return (
-        <input {...props} formatter={formatReal} />
+        <input {...props} />
     )
 }
 
 export const InputCpf: React.FC<InputProps> = (props: InputProps) => {
     return (
-        <input {...props} formatter={formatUtil.formatCPF} />
+        <input {...props} />
     )
 }
 export const InputFone: React.FC<InputProps> = (props: InputProps) => {
     return (
-        <input {...props} formatter={formatUtil.formatPhone} />
+        <input {...props} />
     )
 }
 export const InputDate: React.FC<InputProps> = (props: InputProps) => {
@@ -92,6 +92,6 @@ export const InputDate: React.FC<InputProps> = (props: InputProps) => {
     }
 
     return (
-        <input {...props} maxLength={10} formatter={formatData} />
+        <input {...props} maxLength={10}/>
     )
 }
