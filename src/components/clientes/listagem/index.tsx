@@ -95,13 +95,21 @@ export const ListagemClientes: React.FC = () => {
                             Consultar
                         </button>
                     </div>
-
+                    <div className="control is-link">
+                        <button
+                            type="submit"
+                            className="button is-warning"
+                            onClick={e => Router.push("/cadastros/clientes")}>
+                            Novo
+                        </button>
+                    </div>
                 </div>
             </form>
             <br />
             <div className="columns">
                 <div className="is-full">
-                    <DataTable value={clientes.content}
+                    <DataTable
+                        value={clientes.content}
                         totalRecords={clientes.totalElements}
                         lazy paginator
                         first={clientes.first}

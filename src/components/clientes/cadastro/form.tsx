@@ -119,6 +119,12 @@ export const ClienteForm: React.FC<ClienteFormProps> = ({
                         {formik.values.id ? "Atualizar" : "Salvar"}
                     </button>
                 </div>
+                <div className='control'>
+                    <button type="button" className="button"
+                        onClick={e => Router.push("/consultas/clientes")}>
+                        Voltar
+                    </button>
+                </div>
             </div>
         </form>
     )
