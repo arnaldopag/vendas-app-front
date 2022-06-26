@@ -17,6 +17,7 @@
     "next": "12.1.6",
     "next-transpile-modules": "^9.0.0",
     "nextjs-cors": "^2.1.1",
+    "primeflex": "2.0.0",
     "primereact": "6.4.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
